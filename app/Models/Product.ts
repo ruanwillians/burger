@@ -13,6 +13,9 @@ export default class Product extends BaseModel {
   public price: number
 
   @column()
+  public offer: boolean
+
+  @column()
   public categoryId: number
 
   @column()

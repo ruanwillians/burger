@@ -25,7 +25,8 @@ Route.group(() => {
   Route.group(() => {
     Route.get('/users', 'UsersController.index')
     Route.resource('/products', 'ProductsController').apiOnly()
-    Route.resource('/categories', 'CategoriesController').apiOnly()
+    Route.resource('/order', 'OrdersController').apiOnly()
+    Route.resource('/category', 'CategoriesController').apiOnly()
   }).middleware(['auth'])
 
   Route.post('/users', 'UsersController.store')

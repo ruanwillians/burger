@@ -23,6 +23,7 @@ export default class UsersController {
         rules.required(),
         rules.minLength(6)
       ]),
+      admin: schema.boolean()
     })
 
     const userPayload = await request.validate({ schema: newUserSchema })
