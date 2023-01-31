@@ -46,7 +46,10 @@ export default class ProductsController {
 
   }
 
-  public async show({}: HttpContextContract) {}
+  public async show({params}: HttpContextContract) {
+    const product = await Product.findOrFail(params.id)
+    return product
+  }
 
 
   public async update({request, response, auth}: HttpContextContract) {
@@ -86,5 +89,20 @@ export default class ProductsController {
 
   }
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({request, response, auth, params}: HttpContextContract) {
+    const { admin } = await User.findOrFail(auth.user?.id)
+
+    if (!admin) {
+      return response.status(401).json({ error: 'Você não pode excluir um categoria' })
+    }
+
+    const product = await Product.findOrFail(params.id)
+
+    try {
+      await product.delete()
+      response.status(200).json('produto deletado com sucesso')
+    } catch (error) {
+      response.status(400).json({error: error.message})
+    }
+  }
 }

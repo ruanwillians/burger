@@ -83,5 +83,20 @@ export default class CategoriesController {
 
   }
 
-  public async destroy({ }: HttpContextContract) { }
+  public async destroy({ request, response, auth, params }: HttpContextContract) {
+    const { admin } = await User.findOrFail(auth.user?.id)
+
+    if (!admin) {
+      return response.status(401).json({ error: 'Você não pode excluir um categoria' })
+    }
+
+    const category = await Category.findOrFail(params.id)
+
+    try {
+      await category.delete()
+      response.status(200).json('categoria deletada com sucesso')
+    } catch (error) {
+      response.status(400).json({error: error.message})
+    }
+   }
 }

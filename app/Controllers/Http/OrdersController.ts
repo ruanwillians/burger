@@ -1,6 +1,7 @@
 import Product from 'App/Models/Product';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Order from 'App/Models/Order'
+import User from 'App/Models/User';
 
 export default class OrdersController {
   public async index({ response }: HttpContextContract) {
@@ -52,7 +53,10 @@ export default class OrdersController {
     return response.status(200).json('Pedido feito com sucesso')
   }
 
-  public async show({ }: HttpContextContract) {}
+  public async show({params }: HttpContextContract) {
+    const order = await Order.findOrFail(params.id)
+    return order
+  }
 
 
   public async update({ request, response }: HttpContextContract) {
@@ -78,5 +82,20 @@ export default class OrdersController {
     }
   }
 
-  public async destroy({ }: HttpContextContract) { }
+  public async destroy({ request, response, auth, params}: HttpContextContract) {
+    const { admin } = await User.findOrFail(auth.user?.id)
+
+    if (!admin) {
+      return response.status(401).json({ error: 'Você não pode excluir um categoria' })
+    }
+
+    const order= await Order.findOrFail(params.id)
+
+    try {
+      await order.delete()
+      response.status(200).json('Pedido deletado com sucesso')
+    } catch (error) {
+      response.status(400).json({error: error.message})
+    }
+  }
 }
