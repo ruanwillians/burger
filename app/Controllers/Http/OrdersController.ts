@@ -3,6 +3,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Order from 'App/Models/Order'
 import User from 'App/Models/User';
 
+
 export default class OrdersController {
   public async index({ response }: HttpContextContract) {
     const orders = await Order.all()
@@ -13,7 +14,7 @@ export default class OrdersController {
   public async store({ request, response, auth }: HttpContextContract) {
 
 
-    const orderPayload = await request.body()
+    const orderPayload: any = await request.body()
 
     //mapeando id's dos produtos do pedido
     const productId = orderPayload.pedido.products.map((product) => product.id)
@@ -82,7 +83,7 @@ export default class OrdersController {
     }
   }
 
-  public async destroy({ request, response, auth, params}: HttpContextContract) {
+  public async destroy({ response, auth, params}: HttpContextContract) {
     const { admin } = await User.findOrFail(auth.user?.id)
 
     if (!admin) {

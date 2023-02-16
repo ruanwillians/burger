@@ -9,7 +9,7 @@ export default class ProductsController {
 
   private validationOptions= {
     types: ['image'],
-    size: '2mb'
+    size: '5mb'
   }
 
   public async index({}: HttpContextContract) {
@@ -89,7 +89,7 @@ export default class ProductsController {
 
   }
 
-  public async destroy({request, response, auth, params}: HttpContextContract) {
+  public async destroy({ response, auth, params}: HttpContextContract) {
     const { admin } = await User.findOrFail(auth.user?.id)
 
     if (!admin) {

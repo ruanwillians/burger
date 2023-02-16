@@ -80,10 +80,9 @@ export default class CategoriesController {
   } catch (error) {
     response.status(400).json({error: error.message})
   }
+}
 
-  }
-
-  public async destroy({ request, response, auth, params }: HttpContextContract) {
+  public async destroy({ response, auth, params }: HttpContextContract) {
     const { admin } = await User.findOrFail(auth.user?.id)
 
     if (!admin) {
