@@ -49,11 +49,11 @@ Route.group(() => {
   Route.group(() => {
     Route.get('/users', 'UsersController.index')
     Route.post('/products', 'ProductsController.store')
-    Route.delete('/products', 'ProductsController.destroy')
+    Route.delete('/products/:id', 'ProductsController.destroy')
     Route.patch('/products/:id', 'ProductsController.update')
     Route.resource('/order', 'OrdersController').apiOnly()
     Route.post('/category', 'CategoriesController.store')
-    Route.delete('/category', 'CategoriesController.destroy')
+    Route.delete('/category/:id', 'CategoriesController.destroy')
     Route.patch('/category', 'CategoriesController.update')
 
   }).middleware(['auth'])
